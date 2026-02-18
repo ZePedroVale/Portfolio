@@ -8,10 +8,76 @@ const Portfolio = () => {
   const [visibleProjects, setVisibleProjects] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [lang, setLang] = useState('en');
+  const [isDark, setIsDark] = useState(true);
   const projectRefs = useRef([]);
 
   // ============================================
-  // 🌍 TRANSLATIONS
+  // THEME COLORS
+  // ============================================
+  const c = isDark ? {
+    bg: '#0a0a0f',
+    cardBg: '#12121a',
+    codeHdrBg: '#0a0a0f',
+    text: '#ffffff',
+    textSec: '#aaa',
+    textMut: '#888',
+    textFaint: '#666',
+    textFaintest: '#555',
+    border: '#222',
+    borderL: '#1a1a25',
+    navBg: 'rgba(10,10,15,0.95)',
+    mobileBg: 'rgba(10,10,15,0.98)',
+    skillBarBg: '#1a1a25',
+    shapeBg: 'linear-gradient(135deg,#1a1a25 0%,#0a0a0f 100%)',
+    shapeInner: 'linear-gradient(135deg,#FF6B3522 0%,#4ECDC422 100%)',
+    nameGrad: 'linear-gradient(135deg,#fff 0%,#888 100%)',
+    dotBorder: '#0a0a0f',
+    codeColor: '#4ECDC4',
+    langBg: 'rgba(255,255,255,0.05)',
+    langBorder: '#333',
+    scrollLineBg: '#333',
+    secLineBg: '#222',
+    dividerBg: '#333',
+    tlLineBg: '#222',
+    orb1: 'radial-gradient(circle,rgba(255,107,53,0.15) 0%,transparent 70%)',
+    orb2: 'radial-gradient(circle,rgba(78,205,196,0.1) 0%,transparent 70%)',
+    menuLineBg: '#ffffff',
+    navLinkColor: '#888',
+    themeIcon: '☀',
+  } : {
+    bg: '#f5f5f0',
+    cardBg: '#ffffff',
+    codeHdrBg: '#ebebea',
+    text: '#0d0d1a',
+    textSec: '#444',
+    textMut: '#666',
+    textFaint: '#777',
+    textFaintest: '#888',
+    border: '#d5d5cc',
+    borderL: '#e5e5e0',
+    navBg: 'rgba(245,245,240,0.95)',
+    mobileBg: 'rgba(245,245,240,0.98)',
+    skillBarBg: '#e0e0d8',
+    shapeBg: 'linear-gradient(135deg,#e0e0d8 0%,#f5f5f0 100%)',
+    shapeInner: 'linear-gradient(135deg,#FF6B3528 0%,#4ECDC428 100%)',
+    nameGrad: 'linear-gradient(135deg,#0d0d1a 0%,#555 100%)',
+    dotBorder: '#f5f5f0',
+    codeColor: '#1a8070',
+    langBg: 'rgba(0,0,0,0.05)',
+    langBorder: '#ccc',
+    scrollLineBg: '#bbb',
+    secLineBg: '#d5d5cc',
+    dividerBg: '#ccc',
+    tlLineBg: '#d5d5cc',
+    orb1: 'radial-gradient(circle,rgba(255,107,53,0.08) 0%,transparent 70%)',
+    orb2: 'radial-gradient(circle,rgba(78,205,196,0.06) 0%,transparent 70%)',
+    menuLineBg: '#0d0d1a',
+    navLinkColor: '#666',
+    themeIcon: '☾',
+  };
+
+  // ============================================
+  // TRANSLATIONS
   // ============================================
   const translations = {
     en: {
@@ -96,7 +162,7 @@ const Portfolio = () => {
           {
             degree: "Master's Degree in Computer Science",
             school: 'Instituto Politécnico de Bragança',
-            year: '2022 - 2023'
+            year: '2022 - Present'
           },
           {
             degree: "Bachelor's Degree in Computer Science",
@@ -196,7 +262,7 @@ const Portfolio = () => {
           {
             degree: 'Mestrado em Informática',
             school: 'Instituto Politécnico de Bragança',
-            year: '2022 - 2023'
+            year: '2022 - Presente'
           },
           {
             degree: 'Licenciatura em Informática',
@@ -219,7 +285,7 @@ const Portfolio = () => {
   const t = translations[lang];
 
   // ============================================
-  // 🎯 PERSONAL DATA
+  // PERSONAL DATA
   // ============================================
   const portfolioData = {
     name: "José Vale",
@@ -228,7 +294,7 @@ const Portfolio = () => {
     location: "Braga, Portugal",
     email: "jpbvale09@gmail.com",
     github: "github.com/josevale",
-    linkedin: "linkedin.com/in/josévale-2a7612236",
+    linkedin: "www.linkedin.com/in/josé-vale-2a7612236",
     skills: [
       { name: "Cegid Primavera", level: 92 },
       { name: "SQL / Databases", level: 90 },
@@ -240,19 +306,20 @@ const Portfolio = () => {
     stats: {
       years: "2+",
       projects: "20+",
-      certifications: "5"
+      certifications: "6"
     },
     certifications: [
       "Cybersecurity Essentials",
       "Introduction to IoT",
       "Cegid Primavera - Logistics",
       "Software Design & Project Management",
-      "Implementation and Testing"
+      "Implementation and Testing",
+      "Developer - Cegid Primavera - ERP"
     ]
   };
 
   const projectColors = ["#FF6B35", "#4ECDC4", "#7B68EE", "#F7B731"];
-  const projectEmojis = ["⚙️", "💻", "🔗", "📚"];
+  const projectSymbols = ["{ }", "</>", "[ ]", "//"];
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -271,7 +338,7 @@ const Portfolio = () => {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
@@ -310,9 +377,145 @@ const Portfolio = () => {
     }
   };
 
-  const toggleLanguage = () => {
-    setLang(lang === 'en' ? 'pt' : 'en');
+  const toggleLanguage = () => setLang(lang === 'en' ? 'pt' : 'en');
+  const toggleTheme = () => setIsDark(!isDark);
+
+  // ============================================
+  // STYLES (theme-aware)
+  // ============================================
+  const styles = {
+    container: { fontFamily: "'Space Grotesk', sans-serif", backgroundColor: c.bg, color: c.text, minHeight: '100vh', overflowX: 'hidden', position: 'relative', transition: 'background-color 0.3s ease, color 0.3s ease' },
+    cursor: { position: 'fixed', width: '20px', height: '20px', border: '2px solid #FF6B35', borderRadius: '50%', pointerEvents: 'none', zIndex: 9999, transition: 'transform 0.1s ease' },
+    cursorTrail: { position: 'fixed', width: '8px', height: '8px', backgroundColor: '#FF6B35', borderRadius: '50%', pointerEvents: 'none', zIndex: 9998, transition: 'transform 0.15s ease' },
+    backgroundGradient: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 0 },
+    gradientOrb: { position: 'absolute', top: '-20%', right: '-10%', width: '60vw', height: '60vw', background: c.orb1, borderRadius: '50%', transition: 'transform 0.3s ease' },
+    gradientOrb2: { position: 'absolute', bottom: '-30%', left: '-20%', width: '70vw', height: '70vw', background: c.orb2, borderRadius: '50%', transition: 'transform 0.3s ease' },
+    nav: { position: 'fixed', top: 0, left: 0, right: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 5%', zIndex: 1000, transition: 'all 0.3s ease' },
+    logo: { cursor: 'pointer', display: 'flex', alignItems: 'center' },
+    logoText: { fontFamily: "'Playfair Display', serif", fontSize: '28px', fontWeight: 700, letterSpacing: '-1px', color: c.text },
+    logoDot: { color: '#FF6B35', fontSize: '32px' },
+    navControls: { display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto', marginRight: '30px' },
+    themeToggle: { background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', border: `1px solid ${c.border}`, borderRadius: '20px', padding: '8px 14px', cursor: 'pointer', color: c.text, fontSize: '16px', transition: 'all 0.3s ease', lineHeight: 1 },
+    langToggle: { background: c.langBg, border: `1px solid ${c.langBorder}`, borderRadius: '20px', padding: '8px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', transition: 'all 0.3s ease' },
+    langActive: { color: '#FF6B35', fontWeight: 600, fontSize: '12px' },
+    langInactive: { color: c.textMut, fontSize: '12px' },
+    langDivider: { color: c.border, fontSize: '12px' },
+    navLinks: { display: 'flex', gap: '40px' },
+    navLink: { background: 'none', border: 'none', color: c.navLinkColor, fontSize: '14px', fontWeight: 500, cursor: 'pointer', position: 'relative', padding: '8px 0', transition: 'color 0.3s ease', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase', letterSpacing: '1px' },
+    navLinkUnderline: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', backgroundColor: '#FF6B35' },
+    menuToggle: { flexDirection: 'column', gap: '5px', background: 'none', border: 'none', cursor: 'pointer', padding: '10px' },
+    menuLine: { width: '25px', height: '2px', backgroundColor: c.menuLineBg, transition: 'all 0.3s ease' },
+    mobileMenu: { position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: c.mobileBg, padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px', backdropFilter: 'blur(20px)' },
+    mobileNavLink: { background: 'none', border: 'none', color: c.text, fontSize: '18px', padding: '15px 20px', textAlign: 'left', cursor: 'pointer', fontFamily: "'Space Grotesk', sans-serif", animation: 'slideIn 0.3s ease forwards' },
+    hero: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '120px 5% 80px', position: 'relative', zIndex: 1, flexWrap: 'wrap', gap: '40px' },
+    heroContent: { flex: '1 1 500px', maxWidth: '650px' },
+    heroTagline: { display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '25px' },
+    heroLine: { width: '40px', height: '2px', backgroundColor: '#FF6B35' },
+    heroTaglineText: { fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase', color: c.textMut },
+    heroTitle: { marginBottom: '15px' },
+    heroTitleLine: { display: 'block', fontSize: 'clamp(18px, 3vw, 24px)', color: c.textMut, marginBottom: '10px', fontWeight: 400 },
+    heroName: { display: 'block', fontFamily: "'Playfair Display', serif", fontSize: 'clamp(48px, 8vw, 80px)', fontWeight: 700, lineHeight: 1.1, background: c.nameGrad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' },
+    heroRole: { display: 'flex', alignItems: 'center', gap: '12px', fontSize: '20px', color: '#4ECDC4', marginBottom: '8px' },
+    roleIcon: { fontSize: '10px' },
+    heroCompany: { fontSize: '14px', color: c.textFaint, marginBottom: '25px', letterSpacing: '1px' },
+    heroDescription: { fontSize: '18px', lineHeight: 1.7, color: c.textSec, marginBottom: '40px', maxWidth: '500px' },
+    heroCTA: { display: 'flex', gap: '20px', marginBottom: '50px', flexWrap: 'wrap' },
+    primaryButton: { display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 32px', backgroundColor: '#FF6B35', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '16px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s ease', fontFamily: "'Space Grotesk', sans-serif" },
+    secondaryButton: { padding: '16px 32px', backgroundColor: 'transparent', border: `2px solid ${c.border}`, borderRadius: '50px', color: c.text, fontSize: '16px', fontWeight: 500, cursor: 'pointer', transition: 'all 0.3s ease', fontFamily: "'Space Grotesk', sans-serif" },
+    buttonArrow: { transition: 'transform 0.3s ease' },
+    heroStats: { display: 'flex', alignItems: 'center', gap: '30px', flexWrap: 'wrap' },
+    stat: { textAlign: 'center' },
+    statNumber: { display: 'block', fontSize: '36px', fontWeight: 700, color: '#FF6B35', fontFamily: "'Playfair Display', serif" },
+    statLabel: { fontSize: '12px', color: c.textFaint, textTransform: 'uppercase', letterSpacing: '1px' },
+    statDivider: { width: '1px', height: '40px', backgroundColor: c.dividerBg },
+    heroVisual: { flex: '1 1 400px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', minHeight: '400px' },
+    heroShape: { width: '300px', height: '300px', borderRadius: '50%', background: c.shapeBg, display: 'flex', justifyContent: 'center', alignItems: 'center', border: `1px solid ${c.border}`, position: 'relative' },
+    heroShapeInner: { width: '200px', height: '200px', borderRadius: '50%', background: c.shapeInner, display: 'flex', justifyContent: 'center', alignItems: 'center' },
+    heroInitials: { fontFamily: "'Playfair Display', serif", fontSize: '72px', fontWeight: 700, color: '#FF6B35', letterSpacing: '-6px', userSelect: 'none' },
+    floatingElement: { position: 'absolute', fontFamily: 'monospace', fontWeight: 800, opacity: 0.65 },
+    scrollIndicator: { position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' },
+    scrollText: { fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: c.textFaintest },
+    scrollLine: { width: '1px', height: '40px', backgroundColor: c.scrollLineBg, position: 'relative', overflow: 'hidden' },
+    scrollDot: { width: '3px', height: '8px', backgroundColor: '#FF6B35', position: 'absolute', left: '-1px', borderRadius: '2px' },
+    section: { padding: '100px 5%', position: 'relative', zIndex: 1 },
+    sectionHeader: { display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '60px', flexWrap: 'wrap' },
+    sectionNumber: { fontSize: '14px', color: '#FF6B35', fontWeight: 600 },
+    sectionTitle: { fontFamily: "'Playfair Display', serif", fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 600, color: c.text },
+    sectionLine: { flex: 1, height: '1px', backgroundColor: c.secLineBg, minWidth: '50px' },
+    aboutContent: { display: 'flex', gap: '60px', flexWrap: 'wrap' },
+    aboutText: { flex: '1 1 400px' },
+    aboutParagraph: { fontSize: '17px', lineHeight: 1.8, color: c.textSec, marginBottom: '50px' },
+    skillsGrid: { display: 'flex', flexDirection: 'column', gap: '25px' },
+    skillItem: { maxWidth: '400px' },
+    skillHeader: { display: 'flex', justifyContent: 'space-between', marginBottom: '10px' },
+    skillName: { fontSize: '14px', fontWeight: 500, color: c.text },
+    skillLevel: { fontSize: '14px', color: '#FF6B35' },
+    skillBar: { height: '4px', backgroundColor: c.skillBarBg, borderRadius: '2px', overflow: 'hidden' },
+    skillProgress: { height: '100%', background: 'linear-gradient(90deg, #FF6B35, #4ECDC4)', borderRadius: '2px' },
+    aboutVisual: { flex: '1 1 350px', display: 'flex', flexDirection: 'column', gap: '30px' },
+    codeBlock: { backgroundColor: c.cardBg, borderRadius: '12px', border: `1px solid ${c.border}`, overflow: 'hidden', width: '100%', maxWidth: '420px' },
+    codeHeader: { display: 'flex', gap: '8px', padding: '15px 20px', backgroundColor: c.codeHdrBg, alignItems: 'center' },
+    codeDot: { width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#FF6B35' },
+    codeFileName: { marginLeft: 'auto', fontSize: '12px', color: c.textFaintest },
+    codeContent: { padding: '20px', fontSize: '13px', lineHeight: 1.8, color: c.codeColor, fontFamily: 'monospace', overflow: 'auto' },
+    certifications: { backgroundColor: c.cardBg, borderRadius: '12px', border: `1px solid ${c.border}`, padding: '25px', maxWidth: '420px' },
+    certTitle: { fontSize: '16px', marginBottom: '20px', color: c.text },
+    certItem: { display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: `1px solid ${c.borderL}`, fontSize: '13px', color: c.textMut },
+    certCheck: { color: '#4ECDC4', fontWeight: 'bold' },
+    projectsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' },
+    projectCard: { backgroundColor: c.cardBg, borderRadius: '20px', overflow: 'hidden', border: `1px solid ${c.borderL}`, transition: 'all 0.6s ease' },
+    projectImage: { height: '180px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', overflow: 'hidden' },
+    projectSymbol: { fontFamily: 'monospace', fontWeight: 800, fontSize: '32px', zIndex: 1, letterSpacing: '-1px' },
+    projectOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', opacity: 0.8 },
+    projectContent: { padding: '25px' },
+    projectTitle: { fontSize: '20px', fontWeight: 600, marginBottom: '12px', fontFamily: "'Playfair Display', serif", color: c.text },
+    projectDescription: { fontSize: '14px', lineHeight: 1.7, color: c.textMut, marginBottom: '20px' },
+    projectTags: { display: 'flex', flexWrap: 'wrap', gap: '8px' },
+    projectTag: { padding: '6px 12px', borderRadius: '20px', border: '1px solid', fontSize: '11px', fontWeight: 500 },
+    timeline: { position: 'relative', maxWidth: '800px', margin: '0 auto', paddingLeft: '40px' },
+    timelineLine: { position: 'absolute', left: '10px', top: '10px', bottom: '10px', width: '2px', backgroundColor: c.tlLineBg },
+    timelineItem: { position: 'relative', paddingBottom: '40px' },
+    timelineDot: { position: 'absolute', left: '-34px', top: '5px', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#FF6B35', border: `3px solid ${c.dotBorder}`, zIndex: 1 },
+    timelineContent: { backgroundColor: c.cardBg, borderRadius: '16px', padding: '25px', border: `1px solid ${c.borderL}` },
+    timelineHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', flexWrap: 'wrap', gap: '10px' },
+    timelineRole: { fontSize: '18px', fontWeight: 600, fontFamily: "'Playfair Display', serif", color: c.text },
+    timelinePeriod: { fontSize: '11px', color: '#FF6B35', backgroundColor: '#FF6B3520', padding: '6px 14px', borderRadius: '20px', fontWeight: 500 },
+    timelineCompany: { fontSize: '15px', color: '#4ECDC4', marginBottom: '12px', fontWeight: 500 },
+    timelineDescription: { fontSize: '13px', lineHeight: 1.7, color: c.textMut },
+    educationSection: { marginTop: '80px', maxWidth: '800px', margin: '80px auto 0' },
+    educationTitle: { fontSize: '24px', marginBottom: '30px', fontFamily: "'Playfair Display', serif", color: c.text },
+    educationGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' },
+    educationCard: { backgroundColor: c.cardBg, borderRadius: '16px', padding: '25px', border: `1px solid ${c.borderL}` },
+    eduDegree: { fontSize: '16px', fontWeight: 600, marginBottom: '8px', color: c.text },
+    eduSchool: { fontSize: '14px', color: '#4ECDC4', marginBottom: '8px' },
+    eduYear: { fontSize: '12px', color: c.textFaint },
+    contactSection: { padding: '100px 5%', position: 'relative', zIndex: 1, textAlign: 'center' },
+    contactContent: { maxWidth: '600px', margin: '0 auto' },
+    contactText: { fontSize: '18px', lineHeight: 1.8, color: c.textSec, marginBottom: '50px' },
+    contactLinks: { display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '50px' },
+    contactLink: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', padding: '20px', backgroundColor: c.cardBg, borderRadius: '12px', border: `1px solid ${c.borderL}`, color: c.text, textDecoration: 'none', fontSize: '16px', transition: 'all 0.3s ease' },
+    contactIconEmail: { fontSize: '20px', lineHeight: 1 },
+    contactIconLinkedin: { width: '22px', height: '22px', borderRadius: '4px', backgroundColor: '#0077b5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: 700, fontFamily: 'sans-serif', flexShrink: 0 },
+    contactButton: { alignItems: 'center', gap: '10px', padding: '18px 40px', backgroundColor: '#FF6B35', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '16px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s ease', fontFamily: "'Space Grotesk', sans-serif" },
+    footer: { padding: '40px 5%', borderTop: `1px solid ${c.borderL}`, position: 'relative', zIndex: 1 },
+    footerContent: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' },
+    footerLogo: { fontFamily: "'Playfair Display', serif", fontSize: '24px', fontWeight: 700, color: c.text },
+    footerText: { fontSize: '14px', color: c.textFaint },
   };
+
+  const globalStyles = `
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Space Grotesk', sans-serif; background-color: ${c.bg}; transition: background-color 0.3s ease; }
+    @media (min-width: 769px) { body { cursor: none; } }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes progressFill { from { width: 0; } to { width: var(--skill-width); } }
+    @keyframes scrollDot { 0% { top: 0; opacity: 1; } 100% { top: 20px; opacity: 0; } }
+    .floating-element { animation: float 4s ease-in-out infinite; }
+    .skill-progress { animation: progressFill 1s ease forwards; }
+    .scroll-dot { animation: scrollDot 1.5s ease-in-out infinite; }
+  `;
 
   return (
     <div style={styles.container}>
@@ -330,21 +533,26 @@ const Portfolio = () => {
         <div style={{...styles.gradientOrb2, transform: isMobile ? 'none' : `translate(${-mousePosition.x * 0.015}px, ${-mousePosition.y * 0.015}px)`}} />
       </div>
 
-      <nav style={{...styles.nav, backgroundColor: scrollY > 50 ? 'rgba(10, 10, 15, 0.95)' : 'transparent', backdropFilter: scrollY > 50 ? 'blur(20px)' : 'none'}}>
+      <nav style={{...styles.nav, backgroundColor: scrollY > 50 ? c.navBg : 'transparent', backdropFilter: scrollY > 50 ? 'blur(20px)' : 'none'}}>
         <div style={styles.logo} onClick={() => scrollToSection('home')}>
-          <span style={styles.logoText}>{portfolioData.name.split(' ')[0]}</span>
+          <span style={styles.logoText}>{portfolioData.name.split(' ')[1]}</span>
           <span style={styles.logoDot}>.</span>
         </div>
 
-        <button onClick={toggleLanguage} style={styles.langToggle} title={lang === 'en' ? 'Mudar para Português' : 'Switch to English'}>
-          <span style={lang === 'en' ? styles.langActive : styles.langInactive}>EN</span>
-          <span style={styles.langDivider}>/</span>
-          <span style={lang === 'pt' ? styles.langActive : styles.langInactive}>PT</span>
-        </button>
+        <div style={styles.navControls}>
+          <button onClick={toggleTheme} style={styles.themeToggle} title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+            {c.themeIcon}
+          </button>
+          <button onClick={toggleLanguage} style={styles.langToggle} title={lang === 'en' ? 'Mudar para Português' : 'Switch to English'}>
+            <span style={lang === 'en' ? styles.langActive : styles.langInactive}>EN</span>
+            <span style={styles.langDivider}>/</span>
+            <span style={lang === 'pt' ? styles.langActive : styles.langInactive}>PT</span>
+          </button>
+        </div>
 
         <div style={{...styles.navLinks, display: isMobile ? 'none' : 'flex'}}>
           {sections.map((section, index) => (
-            <button key={section} onClick={() => scrollToSection(section)} style={{...styles.navLink, color: activeSection === section ? '#FF6B35' : '#888'}}>
+            <button key={section} onClick={() => scrollToSection(section)} style={{...styles.navLink, color: activeSection === section ? '#FF6B35' : c.navLinkColor}}>
               {navLabels[index]}
               {activeSection === section && <span style={styles.navLinkUnderline} />}
             </button>
@@ -374,21 +582,21 @@ const Portfolio = () => {
             <span style={styles.heroLine} />
             <span style={styles.heroTaglineText}>{t.hero.portfolio}</span>
           </div>
-          
+
           <h1 style={styles.heroTitle}>
             <span style={styles.heroTitleLine}>{t.hero.greeting}</span>
             <span style={styles.heroName}>{portfolioData.name}</span>
           </h1>
-          
+
           <div style={styles.heroRole}>
             <span style={styles.roleIcon}>◆</span>
             <span>{portfolioData.role}</span>
           </div>
 
           <div style={styles.heroCompany}>@ {portfolioData.company} • {portfolioData.location}</div>
-          
+
           <p style={styles.heroDescription}>{t.hero.tagline}</p>
-          
+
           <div style={styles.heroCTA}>
             <button style={styles.primaryButton} onClick={() => scrollToSection('projects')}>
               <span>{t.hero.viewProjects}</span>
@@ -420,12 +628,12 @@ const Portfolio = () => {
         <div style={styles.heroVisual}>
           <div style={styles.heroShape}>
             <div style={styles.heroShapeInner}>
-              <span style={styles.heroEmoji}>👨‍💻</span>
+              <span style={styles.heroInitials}>JV</span>
             </div>
           </div>
-          <div className="floating-element" style={{...styles.floatingElement, top: '10%', right: '20%'}}>⚙️</div>
-          <div className="floating-element" style={{...styles.floatingElement, bottom: '20%', left: '10%', animationDelay: '1s'}}>🚀</div>
-          <div className="floating-element" style={{...styles.floatingElement, top: '40%', left: '5%', animationDelay: '0.5s', fontSize: '30px'}}>💡</div>
+          <div className="floating-element" style={{...styles.floatingElement, top: '10%', right: '20%', fontSize: '26px', color: '#FF6B35'}}>{'{ }'}</div>
+          <div className="floating-element" style={{...styles.floatingElement, bottom: '20%', left: '10%', animationDelay: '1s', fontSize: '22px', color: '#4ECDC4'}}>{'</>'}</div>
+          <div className="floating-element" style={{...styles.floatingElement, top: '40%', left: '5%', animationDelay: '0.5s', fontSize: '20px', color: '#7B68EE'}}>{'[ ]'}</div>
         </div>
 
         <div style={styles.scrollIndicator}>
@@ -440,11 +648,11 @@ const Portfolio = () => {
           <h2 style={styles.sectionTitle}>{t.about.title}</h2>
           <div style={styles.sectionLine} />
         </div>
-        
+
         <div style={styles.aboutContent}>
           <div style={styles.aboutText}>
             <p style={styles.aboutParagraph}>{t.about.description}</p>
-            
+
             <div style={styles.skillsGrid}>
               {portfolioData.skills.map((skill, index) => (
                 <div key={skill.name} style={styles.skillItem}>
@@ -459,7 +667,7 @@ const Portfolio = () => {
               ))}
             </div>
           </div>
-          
+
           <div style={styles.aboutVisual}>
             <div style={styles.codeBlock}>
               <div style={styles.codeHeader}>
@@ -484,7 +692,7 @@ const Portfolio = () => {
             </div>
 
             <div style={styles.certifications}>
-              <h4 style={styles.certTitle}>🏆 {lang === 'en' ? 'Certifications' : 'Certificações'}</h4>
+              <h4 style={styles.certTitle}>— {lang === 'en' ? 'Certifications' : 'Certificações'}</h4>
               {portfolioData.certifications.map((cert, i) => (
                 <div key={i} style={styles.certItem}>
                   <span style={styles.certCheck}>✓</span>
@@ -517,10 +725,10 @@ const Portfolio = () => {
               }}
             >
               <div style={{...styles.projectImage, background: `linear-gradient(135deg, ${projectColors[index]}22, ${projectColors[index]}44)`}}>
-                <span style={styles.projectEmoji}>{projectEmojis[index]}</span>
+                <span style={{...styles.projectSymbol, color: projectColors[index]}}>{projectSymbols[index]}</span>
                 <div style={{...styles.projectOverlay, background: `linear-gradient(to top, ${projectColors[index]}ee, transparent)`}} />
               </div>
-              
+
               <div style={styles.projectContent}>
                 <h3 style={styles.projectTitle}>{project.title}</h3>
                 <p style={styles.projectDescription}>{project.description}</p>
@@ -562,7 +770,7 @@ const Portfolio = () => {
         </div>
 
         <div style={styles.educationSection}>
-          <h3 style={styles.educationTitle}>🎓 {t.education.title}</h3>
+          <h3 style={styles.educationTitle}>{t.education.title}</h3>
           <div style={styles.educationGrid}>
             {t.education.items.map((edu, index) => (
               <div key={index} style={styles.educationCard}>
@@ -587,11 +795,11 @@ const Portfolio = () => {
 
           <div style={styles.contactLinks}>
             <a href={`mailto:${portfolioData.email}`} style={styles.contactLink}>
-              <span style={styles.contactIcon}>✉️</span>
+              <span style={styles.contactIconEmail}>✉</span>
               <span>{portfolioData.email}</span>
             </a>
             <a href={`https://${portfolioData.linkedin}`} target="_blank" rel="noopener noreferrer" style={styles.contactLink}>
-              <span style={styles.contactIcon}>💼</span>
+              <span style={styles.contactIconLinkedin}>in</span>
               <span>LinkedIn</span>
             </a>
           </div>
@@ -605,143 +813,12 @@ const Portfolio = () => {
 
       <footer style={styles.footer}>
         <div style={styles.footerContent}>
-          <span style={styles.footerLogo}>{portfolioData.name.split(' ')[0]}<span style={styles.logoDot}>.</span></span>
+          <span style={styles.footerLogo}>{portfolioData.name.split(' ')[1]}<span style={styles.logoDot}>.</span></span>
           <span style={styles.footerText}>© 2025 — {t.footer.made}</span>
         </div>
       </footer>
     </div>
   );
-};
-
-const globalStyles = `
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Space Grotesk', sans-serif; background-color: #0a0a0f; }
-  @media (min-width: 769px) { body { cursor: none; } }
-  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-  @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-  @keyframes progressFill { from { width: 0; } to { width: var(--skill-width); } }
-  @keyframes scrollDot { 0% { top: 0; opacity: 1; } 100% { top: 20px; opacity: 0; } }
-  .floating-element { animation: float 4s ease-in-out infinite; }
-  .skill-progress { animation: progressFill 1s ease forwards; }
-  .scroll-dot { animation: scrollDot 1.5s ease-in-out infinite; }
-`;
-
-const styles = {
-  container: { fontFamily: "'Space Grotesk', sans-serif", backgroundColor: '#0a0a0f', color: '#fff', minHeight: '100vh', overflowX: 'hidden', position: 'relative' },
-  cursor: { position: 'fixed', width: '20px', height: '20px', border: '2px solid #FF6B35', borderRadius: '50%', pointerEvents: 'none', zIndex: 9999, transition: 'transform 0.1s ease' },
-  cursorTrail: { position: 'fixed', width: '8px', height: '8px', backgroundColor: '#FF6B35', borderRadius: '50%', pointerEvents: 'none', zIndex: 9998, transition: 'transform 0.15s ease' },
-  backgroundGradient: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 0 },
-  gradientOrb: { position: 'absolute', top: '-20%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(255,107,53,0.15) 0%, transparent 70%)', borderRadius: '50%', transition: 'transform 0.3s ease' },
-  gradientOrb2: { position: 'absolute', bottom: '-30%', left: '-20%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(78,205,196,0.1) 0%, transparent 70%)', borderRadius: '50%', transition: 'transform 0.3s ease' },
-  nav: { position: 'fixed', top: 0, left: 0, right: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 5%', zIndex: 1000, transition: 'all 0.3s ease' },
-  logo: { cursor: 'pointer', display: 'flex', alignItems: 'center' },
-  logoText: { fontFamily: "'Playfair Display', serif", fontSize: '28px', fontWeight: 700, letterSpacing: '-1px' },
-  logoDot: { color: '#FF6B35', fontSize: '32px' },
-  langToggle: { background: 'rgba(255,255,255,0.05)', border: '1px solid #333', borderRadius: '20px', padding: '8px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', transition: 'all 0.3s ease', marginLeft: 'auto', marginRight: '30px' },
-  langActive: { color: '#FF6B35', fontWeight: 600, fontSize: '12px' },
-  langInactive: { color: '#666', fontSize: '12px' },
-  langDivider: { color: '#444', fontSize: '12px' },
-  navLinks: { display: 'flex', gap: '40px' },
-  navLink: { background: 'none', border: 'none', color: '#888', fontSize: '14px', fontWeight: 500, cursor: 'pointer', position: 'relative', padding: '8px 0', transition: 'color 0.3s ease', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase', letterSpacing: '1px' },
-  navLinkUnderline: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', backgroundColor: '#FF6B35' },
-  menuToggle: { flexDirection: 'column', gap: '5px', background: 'none', border: 'none', cursor: 'pointer', padding: '10px' },
-  menuLine: { width: '25px', height: '2px', backgroundColor: '#fff', transition: 'all 0.3s ease' },
-  mobileMenu: { position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: 'rgba(10, 10, 15, 0.98)', padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px', backdropFilter: 'blur(20px)' },
-  mobileNavLink: { background: 'none', border: 'none', color: '#fff', fontSize: '18px', padding: '15px 20px', textAlign: 'left', cursor: 'pointer', fontFamily: "'Space Grotesk', sans-serif", animation: 'slideIn 0.3s ease forwards' },
-  hero: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '120px 5% 80px', position: 'relative', zIndex: 1, flexWrap: 'wrap', gap: '40px' },
-  heroContent: { flex: '1 1 500px', maxWidth: '650px' },
-  heroTagline: { display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '25px' },
-  heroLine: { width: '40px', height: '2px', backgroundColor: '#FF6B35' },
-  heroTaglineText: { fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase', color: '#888' },
-  heroTitle: { marginBottom: '15px' },
-  heroTitleLine: { display: 'block', fontSize: 'clamp(18px, 3vw, 24px)', color: '#888', marginBottom: '10px', fontWeight: 400 },
-  heroName: { display: 'block', fontFamily: "'Playfair Display', serif", fontSize: 'clamp(48px, 8vw, 80px)', fontWeight: 700, lineHeight: 1.1, background: 'linear-gradient(135deg, #fff 0%, #888 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' },
-  heroRole: { display: 'flex', alignItems: 'center', gap: '12px', fontSize: '20px', color: '#4ECDC4', marginBottom: '8px' },
-  roleIcon: { fontSize: '10px' },
-  heroCompany: { fontSize: '14px', color: '#666', marginBottom: '25px', letterSpacing: '1px' },
-  heroDescription: { fontSize: '18px', lineHeight: 1.7, color: '#aaa', marginBottom: '40px', maxWidth: '500px' },
-  heroCTA: { display: 'flex', gap: '20px', marginBottom: '50px', flexWrap: 'wrap' },
-  primaryButton: { display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 32px', backgroundColor: '#FF6B35', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '16px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s ease', fontFamily: "'Space Grotesk', sans-serif" },
-  secondaryButton: { padding: '16px 32px', backgroundColor: 'transparent', border: '2px solid #333', borderRadius: '50px', color: '#fff', fontSize: '16px', fontWeight: 500, cursor: 'pointer', transition: 'all 0.3s ease', fontFamily: "'Space Grotesk', sans-serif" },
-  buttonArrow: { transition: 'transform 0.3s ease' },
-  heroStats: { display: 'flex', alignItems: 'center', gap: '30px', flexWrap: 'wrap' },
-  stat: { textAlign: 'center' },
-  statNumber: { display: 'block', fontSize: '36px', fontWeight: 700, color: '#FF6B35', fontFamily: "'Playfair Display', serif" },
-  statLabel: { fontSize: '12px', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' },
-  statDivider: { width: '1px', height: '40px', backgroundColor: '#333' },
-  heroVisual: { flex: '1 1 400px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', minHeight: '400px' },
-  heroShape: { width: '300px', height: '300px', borderRadius: '50%', background: 'linear-gradient(135deg, #1a1a25 0%, #0a0a0f 100%)', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #222', position: 'relative' },
-  heroShapeInner: { width: '200px', height: '200px', borderRadius: '50%', background: 'linear-gradient(135deg, #FF6B3522 0%, #4ECDC422 100%)', display: 'flex', justifyContent: 'center', alignItems: 'center' },
-  heroEmoji: { fontSize: '80px' },
-  floatingElement: { position: 'absolute', fontSize: '40px' },
-  scrollIndicator: { position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' },
-  scrollText: { fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: '#555' },
-  scrollLine: { width: '1px', height: '40px', backgroundColor: '#333', position: 'relative', overflow: 'hidden' },
-  scrollDot: { width: '3px', height: '8px', backgroundColor: '#FF6B35', position: 'absolute', left: '-1px', borderRadius: '2px' },
-  section: { padding: '100px 5%', position: 'relative', zIndex: 1 },
-  sectionHeader: { display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '60px', flexWrap: 'wrap' },
-  sectionNumber: { fontSize: '14px', color: '#FF6B35', fontWeight: 600 },
-  sectionTitle: { fontFamily: "'Playfair Display', serif", fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 600 },
-  sectionLine: { flex: 1, height: '1px', backgroundColor: '#222', minWidth: '50px' },
-  aboutContent: { display: 'flex', gap: '60px', flexWrap: 'wrap' },
-  aboutText: { flex: '1 1 400px' },
-  aboutParagraph: { fontSize: '17px', lineHeight: 1.8, color: '#aaa', marginBottom: '50px' },
-  skillsGrid: { display: 'flex', flexDirection: 'column', gap: '25px' },
-  skillItem: { maxWidth: '400px' },
-  skillHeader: { display: 'flex', justifyContent: 'space-between', marginBottom: '10px' },
-  skillName: { fontSize: '14px', fontWeight: 500 },
-  skillLevel: { fontSize: '14px', color: '#FF6B35' },
-  skillBar: { height: '4px', backgroundColor: '#1a1a25', borderRadius: '2px', overflow: 'hidden' },
-  skillProgress: { height: '100%', background: 'linear-gradient(90deg, #FF6B35, #4ECDC4)', borderRadius: '2px' },
-  aboutVisual: { flex: '1 1 350px', display: 'flex', flexDirection: 'column', gap: '30px' },
-  codeBlock: { backgroundColor: '#12121a', borderRadius: '12px', border: '1px solid #222', overflow: 'hidden', width: '100%', maxWidth: '420px' },
-  codeHeader: { display: 'flex', gap: '8px', padding: '15px 20px', backgroundColor: '#0a0a0f', alignItems: 'center' },
-  codeDot: { width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#FF6B35' },
-  codeFileName: { marginLeft: 'auto', fontSize: '12px', color: '#555' },
-  codeContent: { padding: '20px', fontSize: '13px', lineHeight: 1.8, color: '#4ECDC4', fontFamily: 'monospace', overflow: 'auto' },
-  certifications: { backgroundColor: '#12121a', borderRadius: '12px', border: '1px solid #222', padding: '25px', maxWidth: '420px' },
-  certTitle: { fontSize: '16px', marginBottom: '20px', color: '#fff' },
-  certItem: { display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #1a1a25', fontSize: '13px', color: '#888' },
-  certCheck: { color: '#4ECDC4', fontWeight: 'bold' },
-  projectsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' },
-  projectCard: { backgroundColor: '#12121a', borderRadius: '20px', overflow: 'hidden', border: '1px solid #1a1a25', transition: 'all 0.6s ease' },
-  projectImage: { height: '180px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', overflow: 'hidden' },
-  projectEmoji: { fontSize: '60px', zIndex: 1 },
-  projectOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', opacity: 0.8 },
-  projectContent: { padding: '25px' },
-  projectTitle: { fontSize: '20px', fontWeight: 600, marginBottom: '12px', fontFamily: "'Playfair Display', serif" },
-  projectDescription: { fontSize: '14px', lineHeight: 1.7, color: '#888', marginBottom: '20px' },
-  projectTags: { display: 'flex', flexWrap: 'wrap', gap: '8px' },
-  projectTag: { padding: '6px 12px', borderRadius: '20px', border: '1px solid', fontSize: '11px', fontWeight: 500 },
-  timeline: { position: 'relative', maxWidth: '800px', margin: '0 auto', paddingLeft: '40px' },
-  timelineLine: { position: 'absolute', left: '10px', top: '10px', bottom: '10px', width: '2px', backgroundColor: '#222' },
-  timelineItem: { position: 'relative', paddingBottom: '40px' },
-  timelineDot: { position: 'absolute', left: '-34px', top: '5px', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#FF6B35', border: '3px solid #0a0a0f', zIndex: 1 },
-  timelineContent: { backgroundColor: '#12121a', borderRadius: '16px', padding: '25px', border: '1px solid #1a1a25' },
-  timelineHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', flexWrap: 'wrap', gap: '10px' },
-  timelineRole: { fontSize: '18px', fontWeight: 600, fontFamily: "'Playfair Display', serif" },
-  timelinePeriod: { fontSize: '11px', color: '#FF6B35', backgroundColor: '#FF6B3520', padding: '6px 14px', borderRadius: '20px', fontWeight: 500 },
-  timelineCompany: { fontSize: '15px', color: '#4ECDC4', marginBottom: '12px', fontWeight: 500 },
-  timelineDescription: { fontSize: '13px', lineHeight: 1.7, color: '#888' },
-  educationSection: { marginTop: '80px', maxWidth: '800px', margin: '80px auto 0' },
-  educationTitle: { fontSize: '24px', marginBottom: '30px', fontFamily: "'Playfair Display', serif" },
-  educationGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' },
-  educationCard: { backgroundColor: '#12121a', borderRadius: '16px', padding: '25px', border: '1px solid #1a1a25' },
-  eduDegree: { fontSize: '16px', fontWeight: 600, marginBottom: '8px', color: '#fff' },
-  eduSchool: { fontSize: '14px', color: '#4ECDC4', marginBottom: '8px' },
-  eduYear: { fontSize: '12px', color: '#666' },
-  contactSection: { padding: '100px 5%', position: 'relative', zIndex: 1, textAlign: 'center' },
-  contactContent: { maxWidth: '600px', margin: '0 auto' },
-  contactText: { fontSize: '18px', lineHeight: 1.8, color: '#aaa', marginBottom: '50px' },
-  contactLinks: { display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '50px' },
-  contactLink: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', padding: '20px', backgroundColor: '#12121a', borderRadius: '12px', border: '1px solid #1a1a25', color: '#fff', textDecoration: 'none', fontSize: '16px', transition: 'all 0.3s ease' },
-  contactIcon: { fontSize: '24px' },
-  contactButton: { alignItems: 'center', gap: '10px', padding: '18px 40px', backgroundColor: '#FF6B35', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '16px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s ease', fontFamily: "'Space Grotesk', sans-serif" },
-  footer: { padding: '40px 5%', borderTop: '1px solid #1a1a25', position: 'relative', zIndex: 1 },
-  footerContent: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' },
-  footerLogo: { fontFamily: "'Playfair Display', serif", fontSize: '24px', fontWeight: 700 },
-  footerText: { fontSize: '14px', color: '#666' },
 };
 
 export default Portfolio;
