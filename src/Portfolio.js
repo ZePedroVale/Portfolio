@@ -9,6 +9,7 @@ const Portfolio = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [lang, setLang] = useState('en');
   const [isDark, setIsDark] = useState(true);
+  const [projectFilter, setProjectFilter] = useState('all');
   const projectRefs = useRef([]);
 
   // ============================================
@@ -85,6 +86,7 @@ const Portfolio = () => {
         home: 'Home',
         about: 'About',
         projects: 'Projects',
+        portfolio: 'Portfolio',
         experience: 'Experience',
         contact: 'Contact'
       },
@@ -171,6 +173,10 @@ const Portfolio = () => {
           }
         ]
       },
+      realProjects: {
+        title: 'My Projects',
+        filters: { all: 'All', professional: 'Professional', academic: 'Academic' }
+      },
       contact: {
         title: "Let's Talk?",
         description: "I'm always open to new opportunities and interesting projects. If you have an idea or just want to say hello, get in touch!",
@@ -185,6 +191,7 @@ const Portfolio = () => {
         home: 'Início',
         about: 'Sobre',
         projects: 'Projetos',
+        portfolio: 'Portfólio',
         experience: 'Experiência',
         contact: 'Contacto'
       },
@@ -271,6 +278,10 @@ const Portfolio = () => {
           }
         ]
       },
+      realProjects: {
+        title: 'Os Meus Projetos',
+        filters: { all: 'Todos', professional: 'Profissional', academic: 'Académico' }
+      },
       contact: {
         title: 'Vamos Conversar?',
         description: 'Estou sempre aberto a novas oportunidades e projetos interessantes. Se tens uma ideia ou queres apenas dizer olá, entra em contacto!',
@@ -315,6 +326,56 @@ const Portfolio = () => {
       "Software Design & Project Management",
       "Implementation and Testing",
       "Developer - Cegid Primavera - ERP"
+    ],
+    realProjects: [
+      {
+        title: 'Connector',
+        period: 'May 2025 - Present',
+        periodPt: 'Mai 2025 - Presente',
+        description: 'Design and development of a custom connector integrating the E-Schooling billing platform with Cegid Primavera ERP, leveraging API extensibility to enable automated replication of financial documents, including Invoices, Credit Notes, Receipts, Accounts Receivable Movements, Open Balances, and related transactional records. Ensured data integrity, consistency, and compliance across systems while optimizing financial process automation and workflows.',
+        tags: ['Cegid Primavera', 'WebAPI', 'C#', 'Integration'],
+        type: 'professional'
+      },
+      {
+        title: 'Link.Advir',
+        period: 'Jan 2025 - Present',
+        periodPt: 'Jan 2025 - Presente',
+        description: 'Design and implementation of an enterprise platform based on React.js, Sequelize ORM, and Nginx, featuring bidirectional integration with the Cegid Primavera ERP via the Primavera WebAPI. Development of advanced API extensibility mechanisms, ensuring transactional data synchronization, system interoperability, and business process automation, with primary focus on Human Resources and Construction modules.',
+        tags: ['React.js', 'Sequelize', 'WebAPI', 'Nginx'],
+        type: 'professional'
+      },
+      {
+        title: 'Ecological Footprint App',
+        period: '',
+        periodPt: '',
+        description: 'Development of ClimateCare, an application to assist users in adopting sustainable practices and promote awareness about climate issues. Features include climate information, sustainable practices tips, ecological footprint calculation, and a community section for user interaction.',
+        tags: ['React', 'FastAPI'],
+        type: 'academic'
+      },
+      {
+        title: 'Escape From Something',
+        period: '',
+        periodPt: '',
+        description: 'OpenGL application in C++ — a simple puzzle game where the objective is to move a green rectangle to a designated area without touching forbidden (red) areas. Includes game window creation, graphic object rendering, and keyboard/mouse event handling.',
+        tags: ['C++', 'OpenGL'],
+        type: 'academic'
+      },
+      {
+        title: 'Smart Education Tool',
+        period: '',
+        periodPt: '',
+        description: 'Multiplatform application with a dashboard to visualize existing food waste and encourage users to take steps to reduce it. Uses React Native and Django REST Framework, with scale and camera integration to identify food items most likely to be wasted, including alerts and community features.',
+        tags: ['Django REST Framework', 'React Native'],
+        type: 'academic'
+      },
+      {
+        title: 'Water Consumption Analysis',
+        period: '',
+        periodPt: '',
+        description: 'Analysis of complex consumption patterns within a comprehensive dataset of monthly water consumption entries from different consumer profiles, compiled by a municipal entity over a decade. Employs advanced Machine Learning techniques for consumer categorization and sustainable resource management insights.',
+        tags: ['Machine Learning', 'Data Analysis'],
+        type: 'academic'
+      }
     ]
   };
 
@@ -365,8 +426,8 @@ const Portfolio = () => {
     return () => observer.disconnect();
   }, []);
 
-  const sections = ['home', 'about', 'projects', 'experience', 'contact'];
-  const navLabels = [t.nav.home, t.nav.about, t.nav.projects, t.nav.experience, t.nav.contact];
+  const sections = ['home', 'about', 'projects', 'portfolio', 'experience', 'contact'];
+  const navLabels = [t.nav.home, t.nav.about, t.nav.projects, t.nav.portfolio, t.nav.experience, t.nav.contact];
 
   const scrollToSection = (section) => {
     const element = document.getElementById(section);
@@ -414,7 +475,7 @@ const Portfolio = () => {
     heroTaglineText: { fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase', color: c.textMut },
     heroTitle: { marginBottom: '15px' },
     heroTitleLine: { display: 'block', fontSize: 'clamp(18px, 3vw, 24px)', color: c.textMut, marginBottom: '10px', fontWeight: 400 },
-    heroName: { display: 'block', fontFamily: "'Playfair Display', serif", fontSize: 'clamp(48px, 8vw, 80px)', fontWeight: 700, lineHeight: 1.1, background: c.nameGrad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' },
+    heroName: { display: 'block', fontFamily: "'Playfair Display', serif", fontSize: 'clamp(48px, 8vw, 80px)', fontWeight: 700, lineHeight: 1.1 },
     heroRole: { display: 'flex', alignItems: 'center', gap: '12px', fontSize: '20px', color: '#4ECDC4', marginBottom: '8px' },
     roleIcon: { fontSize: '10px' },
     heroCompany: { fontSize: '14px', color: c.textFaint, marginBottom: '25px', letterSpacing: '1px' },
@@ -501,6 +562,17 @@ const Portfolio = () => {
     footerContent: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' },
     footerLogo: { fontFamily: "'Playfair Display', serif", fontSize: '24px', fontWeight: 700, color: c.text },
     footerText: { fontSize: '14px', color: c.textFaint },
+    filterTabs: { display: 'flex', gap: '12px', marginBottom: '40px', flexWrap: 'wrap' },
+    filterTab: { padding: '10px 24px', borderRadius: '50px', border: `1px solid ${c.border}`, background: 'transparent', color: c.textMut, fontSize: '13px', fontWeight: 500, cursor: 'pointer', transition: 'all 0.25s ease', fontFamily: "'Space Grotesk', sans-serif" },
+    filterTabActive: { backgroundColor: '#FF6B35', borderColor: '#FF6B35', color: '#ffffff', fontWeight: 600 },
+    realProjectsList: { display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '900px' },
+    realProjectCard: { backgroundColor: c.cardBg, borderRadius: '16px', padding: '28px', border: `1px solid ${c.borderL}`, transition: 'border-color 0.3s ease' },
+    realProjectHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' },
+    realProjectMeta: { display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' },
+    realProjectTitle: { fontSize: '18px', fontWeight: 600, fontFamily: "'Playfair Display', serif", color: c.text },
+    realProjectTypeBadge: { fontSize: '11px', fontWeight: 600, padding: '4px 12px', borderRadius: '20px', textTransform: 'uppercase', letterSpacing: '0.5px' },
+    realProjectPeriod: { fontSize: '12px', color: '#FF6B35', backgroundColor: '#FF6B3520', padding: '5px 14px', borderRadius: '20px', fontWeight: 500, whiteSpace: 'nowrap' },
+    realProjectDescription: { fontSize: '14px', lineHeight: 1.75, color: c.textMut, marginBottom: '18px' },
   };
 
   const globalStyles = `
@@ -515,6 +587,12 @@ const Portfolio = () => {
     .floating-element { animation: float 4s ease-in-out infinite; }
     .skill-progress { animation: progressFill 1s ease forwards; }
     .scroll-dot { animation: scrollDot 1.5s ease-in-out infinite; }
+    .hero-name {
+      background: ${c.nameGrad};
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
   `;
 
   return (
@@ -585,7 +663,7 @@ const Portfolio = () => {
 
           <h1 style={styles.heroTitle}>
             <span style={styles.heroTitleLine}>{t.hero.greeting}</span>
-            <span style={styles.heroName}>{portfolioData.name}</span>
+            <span className="hero-name" style={styles.heroName}>{portfolioData.name}</span>
           </h1>
 
           <div style={styles.heroRole}>
@@ -745,9 +823,63 @@ const Portfolio = () => {
         </div>
       </section>
 
-      <section id="experience" style={styles.section}>
+      <section id="portfolio" style={styles.section}>
         <div style={styles.sectionHeader}>
           <span style={styles.sectionNumber}>03</span>
+          <h2 style={styles.sectionTitle}>{t.realProjects.title}</h2>
+          <div style={styles.sectionLine} />
+        </div>
+
+        <div style={styles.filterTabs}>
+          {['all', 'professional', 'academic'].map(f => (
+            <button
+              key={f}
+              onClick={() => setProjectFilter(f)}
+              style={{...styles.filterTab, ...(projectFilter === f ? styles.filterTabActive : {})}}
+            >
+              {t.realProjects.filters[f]}
+            </button>
+          ))}
+        </div>
+
+        <div style={styles.realProjectsList}>
+          {portfolioData.realProjects
+            .filter(p => projectFilter === 'all' || p.type === projectFilter)
+            .map((project, index) => {
+              const isPro = project.type === 'professional';
+              const accentColor = isPro ? '#FF6B35' : '#4ECDC4';
+              return (
+                <div key={index} style={styles.realProjectCard}>
+                  <div style={styles.realProjectHeader}>
+                    <div style={styles.realProjectMeta}>
+                      <h3 style={styles.realProjectTitle}>{project.title}</h3>
+                      <span style={{...styles.realProjectTypeBadge, backgroundColor: `${accentColor}20`, color: accentColor}}>
+                        {isPro ? t.realProjects.filters.professional : t.realProjects.filters.academic}
+                      </span>
+                    </div>
+                    {project.period && (
+                      <span style={styles.realProjectPeriod}>
+                        {lang === 'en' ? project.period : project.periodPt}
+                      </span>
+                    )}
+                  </div>
+                  <p style={styles.realProjectDescription}>{project.description}</p>
+                  <div style={styles.projectTags}>
+                    {project.tags.map(tag => (
+                      <span key={tag} style={{...styles.projectTag, borderColor: accentColor, color: accentColor}}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      </section>
+
+      <section id="experience" style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <span style={styles.sectionNumber}>04</span>
           <h2 style={styles.sectionTitle}>{t.experience.title}</h2>
           <div style={styles.sectionLine} />
         </div>
@@ -785,7 +917,7 @@ const Portfolio = () => {
 
       <section id="contact" style={styles.contactSection}>
         <div style={styles.sectionHeader}>
-          <span style={styles.sectionNumber}>04</span>
+          <span style={styles.sectionNumber}>05</span>
           <h2 style={styles.sectionTitle}>{t.contact.title}</h2>
           <div style={styles.sectionLine} />
         </div>
@@ -814,7 +946,7 @@ const Portfolio = () => {
       <footer style={styles.footer}>
         <div style={styles.footerContent}>
           <span style={styles.footerLogo}>{portfolioData.name.split(' ')[1]}<span style={styles.logoDot}>.</span></span>
-          <span style={styles.footerText}>© 2025 — {t.footer.made}</span>
+          <span style={styles.footerText}>© 2026 — {t.footer.made}</span>
         </div>
       </footer>
     </div>
