@@ -91,7 +91,7 @@ const Portfolio = () => {
         contact: 'Contact'
       },
       hero: {
-        portfolio: 'Portfolio 2025',
+        portfolio: 'Portfolio',
         greeting: "Hi, I'm",
         tagline: 'Bridging technology and business through innovative ERP solutions',
         viewProjects: 'View Projects',
@@ -196,7 +196,7 @@ const Portfolio = () => {
         contact: 'Contacto'
       },
       hero: {
-        portfolio: 'Portfolio 2025',
+        portfolio: 'Portfolio',
         greeting: 'Olá, eu sou',
         tagline: 'Unindo tecnologia e negócio através de soluções ERP inovadoras',
         viewProjects: 'Ver Projetos',
