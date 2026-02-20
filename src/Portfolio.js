@@ -188,7 +188,7 @@ const Portfolio = () => {
     },
     pt: {
       nav: {
-        home: 'Início',
+        home: 'Inicio',
         about: 'Sobre',
         projects: 'Projetos',
         portfolio: 'Portfólio',
